@@ -14,11 +14,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -28,11 +26,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload dist
+      - name: Upload build folder
         uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: dist
+          name: build
+          path: build
 
   deploy:
     needs: build
@@ -41,11 +39,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Download dist
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: dist
+          name: build
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deploy
